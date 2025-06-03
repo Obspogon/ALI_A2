@@ -20,49 +20,61 @@ export default function App() {
 		<View style={styles.container}>
 			<Text style={styles.title}>Delivericious</Text>
 
-			<Text>Send from address:</Text>
-			<TextInput value={from} placeholder="Sending Address" onChangeText={setFrom} keyboardType="default" autoCapitalize="words" autoCorrect={false}></TextInput>
-
-			<Text>Send to address:</Text>
-			<TextInput value={to} placeholder="Destination Address" onChangeText={setTo} keyboardType="default" autoCapitalize="words" autoCorrect={false}></TextInput>
-
-			<Text>Parcel Type:</Text>
-			<View style={{ flexDirection: "row", gap: 5 }}>
-				<Text style={styles.label}>Selected:</Text>
-				<Text style={styles.label}>{type}</Text>
-			</View>
-			<View style={{ alignItems: "flex-start" }}>
-				{parcelTypes.map((option, index) => (
-					<TouchableOpacity key={index} style={styles.radioContainer} onPress={() => setType(option)}>
-						<View style={styles.radioCircle}>{type === option && <View style={styles.radioDot} />}</View>
-						<Text style={styles.radioLabel}>{option}</Text>
-					</TouchableOpacity>
-				))}
+			<View style={styles.inputContainer}>
+				<Text style={styles.inputLabel}>Send from address:</Text>
+				<TextInput style={styles.inputStyle} value={from} placeholder="Sending Address" onChangeText={setFrom} keyboardType="default" autoCapitalize="words" autoCorrect={false}></TextInput>
 			</View>
 
-			<Text>Parcel Weight (in lbs.):</Text>
-			<TextInput value={weight} placeholder="Weight" onChangeText={setWeight} keyboardType="decimal-pad" autoCorrect={false}></TextInput>
+			<View style={styles.inputContainer}>
+				<Text style={styles.inputLabel}>Send to address:</Text>
+				<TextInput style={styles.inputStyle} value={to} placeholder="Destination Address" onChangeText={setTo} keyboardType="default" autoCapitalize="words" autoCorrect={false}></TextInput>
+			</View>
 
-			<Text>Rate:</Text>
-			<Picker style={styles.dropDownStyle} selectedValue={rate} onValueChange={(itemValue) => setRate(itemValue)}>
-				<Picker.Item label="Pick one..." value={null} />
-				<Picker.Item label="Standard" value="standard" />
-				<Picker.Item label="Xpress Post" value="xpress" />
-				<Picker.Item label="Priority Post" value="priority" />
-			</Picker>
+			<View style={styles.inputContainer}>
+				<Text style={styles.inputLabel}>Parcel Type:</Text>
+				<View style={{ flexDirection: "row", gap: 5 }}>
+					<Text style={styles.label}>Selected:</Text>
+					<Text style={styles.label}>{type}</Text>
+				</View>
+				<View style={{ alignItems: "flex-start" }}>
+					{parcelTypes.map((option, index) => (
+						<TouchableOpacity key={index} style={styles.radioContainer} onPress={() => setType(option)}>
+							<View style={styles.radioCircle}>{type === option && <View style={styles.radioDot} />}</View>
+							<Text style={styles.radioLabel}>{option}</Text>
+						</TouchableOpacity>
+					))}
+				</View>
+			</View>
 
-			<Text>Add-ons:</Text>
-			<View style={styles.checkBoxContainer}>
-				<CheckBox
-					value={signature.Basic}
-					onValueChange={(value) =>
-						setSignature({
-							...signature,
-							Signature: value,
-						})
-					}
-				/>
-				<Text style={{ fontSize: 16 }}>Basic</Text>
+			<View style={styles.inputContainer}>
+				<Text style={styles.inputLabel}>Parcel Weight (in lbs.):</Text>
+				<TextInput style={styles.inputStyle} value={weight} placeholder="Weight" onChangeText={setWeight} keyboardType="decimal-pad" autoCorrect={false}></TextInput>
+			</View>
+
+			<View style={styles.inputContainer}>
+				<Text style={styles.inputLabel}>Rate:</Text>
+				<Picker style={styles.dropDownStyle} selectedValue={rate} onValueChange={(itemValue) => setRate(itemValue)}>
+					<Picker.Item label="Pick one..." value={null} />
+					<Picker.Item label="Standard" value="standard" />
+					<Picker.Item label="Xpress Post" value="xpress" />
+					<Picker.Item label="Priority Post" value="priority" />
+				</Picker>
+			</View>
+
+			<View style={styles.inputContainer}>
+				<Text style={styles.inputLabel}>Add-ons:</Text>
+				<View style={styles.checkBoxContainer}>
+					<CheckBox
+						value={signature.Signature}
+						onValueChange={(value) =>
+							setSignature({
+								...signature,
+								Signature: value,
+							})
+						}
+					/>
+					<Text style={{ fontSize: 16 }}>Signature Option (+$2)</Text>
+				</View>
 			</View>
 
 			<Pressable style={({ pressed }) => [styles.button, { backgroundColor: pressed ? "red" : "dodgerblue" }]} onPress={() => alert("Rate would be here.")}>
@@ -80,11 +92,39 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 		alignItems: "center",
 		justifyContent: "flex-start",
+		alignItems: "flex-start",
 		paddingTop: 50,
+		marginHorizontal: 10,
 	},
 	title: {
 		fontSize: 25,
 		fontWeight: "bold",
+	},
+	inputContainer: {
+		flexDirection: "column",
+		width: "100%",
+		paddingVertical: 10,
+	},
+	inputLabel: {
+		fontSize: 15,
+		padding: 5,
+	},
+	inputStyle: {
+		fontSize: 20,
+		borderColor: "dodgerblue",
+		borderWidth: 2,
+		padding: 5,
+		height: 50,
+		width: "95%",
+		borderRadius: 5,
+	},
+	button: {
+		backgroundColor: "dodgerblue",
+		padding: 10,
+		alignItems: "center",
+		alignSelf: "center",
+		width: "100%",
+		borderRadius: 10,
 	},
 	buttonText: {
 		fontSize: 18,
@@ -117,7 +157,7 @@ const styles = StyleSheet.create({
 	},
 	dropDownStyle: {
 		width: "95%",
-		borderColor: "red",
+		borderColor: "dodgerblue",
 		borderWidth: 2,
 		borderRadius: 5,
 	},
