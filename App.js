@@ -11,10 +11,9 @@ export default function App() {
 	const parcelTypes = ["Package", "Letter/Document"];
 	const [type, setType] = useState(null);
 	const [weight, setWeight] = useState();
+	const [rate, setRate] = useState();
 	const initSignature = { Signature: false };
 	const [signature, setSignature] = useState(initSignature);
-
-	const [rate, setRate] = useState();
 
 	return (
 		<View style={styles.container}>
@@ -77,7 +76,7 @@ export default function App() {
 				</View>
 			</View>
 
-			<Pressable style={({ pressed }) => [styles.button, { backgroundColor: pressed ? "red" : "dodgerblue" }]} onPress={() => alert("Rate would be here.")}>
+			<Pressable style={({ pressed }) => [styles.button, { backgroundColor: pressed ? "lightblue" : "dodgerblue" }]} onPress={() => alert(`Source address: ${from}\nDestination address: ${to}\nParcel Type: ${type}\nWeight: ${weight} lbs.\nRate: ${rate}\nSignature?: ${signature ? "Yes" : "No"}`)}>
 				<Text style={styles.buttonText}>Get Rate</Text>
 			</Pressable>
 
