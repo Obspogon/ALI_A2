@@ -76,7 +76,7 @@ export default function App() {
 				</View>
 			</View>
 
-			<Pressable style={({ pressed }) => [styles.button, { backgroundColor: pressed ? "lightblue" : "dodgerblue" }]} onPress={() => alert(`Source address: ${from}\nDestination address: ${to}\nParcel Type: ${type}\nWeight: ${weight} lbs.\nRate: ${rate}\nSignature?: ${signature ? "Yes" : "No"}`)}>
+			<Pressable style={({ pressed }) => [styles.button, { backgroundColor: pressed ? "lightblue" : "dodgerblue" }]} onPress={() => alert(`Source address: ${from}\nDestination address: ${to}\nParcel Type: ${type}\nWeight: ${weight} lbs.\nRate: ${rate}\nSignature?: ${signature}`)}>
 				<Text style={styles.buttonText}>Get Rate</Text>
 			</Pressable>
 
