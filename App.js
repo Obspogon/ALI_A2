@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable } from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable, ScrollView } from "react-native";
 import CheckBox from "expo-checkbox";
 import { Picker } from "@react-native-picker/picker";
 
@@ -9,7 +9,7 @@ export default function App() {
 	const [from, setFrom] = useState("");
 	const [to, setTo] = useState("");
 	const parcelTypes = ["Package", "Letter/Document"];
-	const [type, setType] = useState(null);
+	const [type, setType] = useState("Package");
 	const [weight, setWeight] = useState();
 	const [rate, setRate] = useState();
 	const initSignature = { Signature: false };
@@ -17,68 +17,66 @@ export default function App() {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>Delivericious</Text>
-
-			<View style={styles.inputContainer}>
-				<Text style={styles.inputLabel}>Send from address:</Text>
-				<TextInput style={styles.inputStyle} value={from} placeholder="Sending Address" onChangeText={setFrom} keyboardType="default" autoCapitalize="words" autoCorrect={false}></TextInput>
-			</View>
-
-			<View style={styles.inputContainer}>
-				<Text style={styles.inputLabel}>Send to address:</Text>
-				<TextInput style={styles.inputStyle} value={to} placeholder="Destination Address" onChangeText={setTo} keyboardType="default" autoCapitalize="words" autoCorrect={false}></TextInput>
-			</View>
-
-			<View style={styles.inputContainer}>
-				<Text style={styles.inputLabel}>Parcel Type:</Text>
-				<View style={{ flexDirection: "row", gap: 5 }}>
-					<Text style={styles.label}>Selected:</Text>
-					<Text style={styles.label}>{type}</Text>
+			<ScrollView>
+				<Text style={styles.title}>Delivericious</Text>
+				<View style={styles.inputContainer}>
+					<Text style={styles.inputLabel}>Send from address:</Text>
+					<TextInput style={styles.inputStyle} value={from} placeholder="Sending Address" onChangeText={setFrom} keyboardType="default" autoCapitalize="words" autoCorrect={false}></TextInput>
 				</View>
-				<View style={{ alignItems: "flex-start" }}>
-					{parcelTypes.map((option, index) => (
-						<TouchableOpacity key={index} style={styles.radioContainer} onPress={() => setType(option)}>
-							<View style={styles.radioCircle}>{type === option && <View style={styles.radioDot} />}</View>
-							<Text style={styles.radioLabel}>{option}</Text>
-						</TouchableOpacity>
-					))}
+				<View style={styles.inputContainer}>
+					<Text style={styles.inputLabel}>Send to address:</Text>
+					<TextInput style={styles.inputStyle} value={to} placeholder="Destination Address" onChangeText={setTo} keyboardType="default" autoCapitalize="words" autoCorrect={false}></TextInput>
 				</View>
-			</View>
-
-			<View style={styles.inputContainer}>
-				<Text style={styles.inputLabel}>Parcel Weight (in lbs.):</Text>
-				<TextInput style={styles.inputStyle} value={weight} placeholder="Weight" onChangeText={setWeight} keyboardType="decimal-pad" autoCorrect={false}></TextInput>
-			</View>
-
-			<View style={styles.inputContainer}>
-				<Text style={styles.inputLabel}>Rate:</Text>
-				<Picker style={styles.dropDownStyle} selectedValue={rate} onValueChange={(itemValue) => setRate(itemValue)}>
-					<Picker.Item label="Pick one..." value={null} />
-					<Picker.Item label="Standard" value="standard" />
-					<Picker.Item label="Xpress Post" value="xpress" />
-					<Picker.Item label="Priority Post" value="priority" />
-				</Picker>
-			</View>
-
-			<View style={styles.inputContainer}>
-				<Text style={styles.inputLabel}>Add-ons:</Text>
-				<View style={styles.checkBoxContainer}>
-					<CheckBox
-						value={signature.Signature}
-						onValueChange={(value) =>
-							setSignature({
-								...signature,
-								Signature: value,
-							})
-						}
-					/>
-					<Text style={{ fontSize: 16 }}>Signature Option (+$2)</Text>
+				<View style={styles.inputContainer}>
+					<Text style={styles.inputLabel}>Parcel Type:</Text>
+					<View style={{ flexDirection: "row", gap: 5 }}>
+						<Text style={styles.label}>Selected:</Text>
+						<Text style={styles.label}>{type}</Text>
+					</View>
+					<View style={{ alignItems: "flex-start" }}>
+						{parcelTypes.map((option, index) => (
+							<TouchableOpacity key={index} style={styles.radioContainer} onPress={() => setType(option)}>
+								<View style={styles.radioCircle}>{type === option && <View style={styles.radioDot} />}</View>
+								<Text style={styles.radioLabel}>{option}</Text>
+							</TouchableOpacity>
+						))}
+					</View>
 				</View>
-			</View>
-
-			<Pressable style={({ pressed }) => [styles.button, { backgroundColor: pressed ? "lightblue" : "dodgerblue" }]} onPress={() => alert(`Source address: ${from}\nDestination address: ${to}\nParcel Type: ${type}\nWeight: ${weight} lbs.\nRate: ${rate}\nSignature?: ${signature}`)}>
-				<Text style={styles.buttonText}>Get Rate</Text>
-			</Pressable>
+				<View style={styles.inputContainer}>
+					<Text style={styles.inputLabel}>Parcel Weight in lbs. (max for this type is {type === "Package" ? "44" : "1.1"}):</Text>
+					<TextInput style={styles.inputStyle} value={weight} placeholder="Weight" onChangeText={setWeight} keyboardType="decimal-pad" autoCorrect={false}></TextInput>
+				</View>
+				<View style={styles.inputContainer}>
+					<Text style={styles.inputLabel}>Rate:</Text>
+					<Text style={styles.inputLabel}>Standard: {type === "Package" ? "$12.99" : "$4.99"}</Text>
+					<Text style={styles.inputLabel}>Xpress Post: {type === "Package" ? "$18.99" : "$9.99"}</Text>
+					<Text style={styles.inputLabel}>Priority Post: {type === "Package" ? "$24.99" : "$14.99"}</Text>
+					<Picker style={styles.dropDownStyle} selectedValue={rate} onValueChange={(itemValue) => setRate(itemValue)}>
+						<Picker.Item label="Pick one..." value={null} />
+						<Picker.Item label="Standard" value="standard" />
+						<Picker.Item label="Xpress Post" value="xpress" />
+						<Picker.Item label="Priority Post" value="priority" />
+					</Picker>
+				</View>
+				<View style={styles.inputContainer}>
+					<Text style={styles.inputLabel}>Add-ons:</Text>
+					<View style={styles.checkBoxContainer}>
+						<CheckBox
+							value={signature.Signature}
+							onValueChange={(value) =>
+								setSignature({
+									...signature,
+									Signature: value,
+								})
+							}
+						/>
+						<Text style={{ fontSize: 16 }}>Signature Option (+$2)</Text>
+					</View>
+				</View>
+				<Pressable style={({ pressed }) => [styles.button, { backgroundColor: pressed ? "lightblue" : "dodgerblue" }]} onPress={() => alert(`Source address: ${from}\nDestination address: ${to}\nParcel Type: ${type}\nWeight: ${weight} lbs.\nRate: ${rate}\nSignature?: ${signature}`)}>
+					<Text style={styles.buttonText}>Get Rate</Text>
+				</Pressable>
+			</ScrollView>
 
 			<StatusBar style="auto" />
 		</View>
