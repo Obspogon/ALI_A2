@@ -101,7 +101,7 @@ export default function App() {
 							}
 							subtotal += signature.Signature ? 2 : 0;
 							let tax = subtotal * 0.13;
-							alert(`Source address: ${from}\nDestination address: ${to}\nParcel Type: ${type}\nWeight: ${weight} lbs.\nRate: ${rate}\nSignature?: ${signature.Signature}\n\nCost with tax: $${Number((subtotal + tax).toFixed(2))}`);
+							alert(`Subtotal: $${Number(subtotal.toFixed(2))}\nTax: $${Number(tax.toFixed(2))}\nTotal cost: $${Number((subtotal + tax).toFixed(2))}`);
 						}
 					}}
 				>
