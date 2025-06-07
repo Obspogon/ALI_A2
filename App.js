@@ -10,7 +10,7 @@ export default function App() {
 	const [to, setTo] = useState("");
 	const parcelTypes = ["Package", "Letter/Document"];
 	const [type, setType] = useState("Package");
-	const [weight, setWeight] = useState();
+	const [weight, setWeight] = useState(null);
 	const [rate, setRate] = useState();
 	const initSignature = { Signature: false };
 	const [signature, setSignature] = useState(initSignature);
@@ -73,7 +73,38 @@ export default function App() {
 						<Text style={{ fontSize: 16 }}>Signature Option (+$2)</Text>
 					</View>
 				</View>
-				<Pressable style={({ pressed }) => [styles.button, { backgroundColor: pressed ? "lightblue" : "dodgerblue" }]} onPress={() => alert(`Source address: ${from}\nDestination address: ${to}\nParcel Type: ${type}\nWeight: ${weight} lbs.\nRate: ${rate}\nSignature?: ${signature}`)}>
+				<Pressable
+					style={({ pressed }) => [styles.button, { backgroundColor: pressed ? "lightblue" : "dodgerblue" }]}
+					onPress={() => {
+						if (from === "") {
+							alert("You need a source address.");
+						} else if (to == "") {
+							alert("You need a destination address.");
+						} else if (weight === null) {
+							alert("You need to enter a weight.");
+						} else if ((type === "Package" && weight > 44) || (type === "Letter/Document" && weight > 1.1)) {
+							alert("Your package is too heavy.");
+						} else if (rate === null || rate === undefined) {
+							alert("Select a package type.");
+						} else {
+							let subtotal = 0;
+							switch (rate) {
+								case "standard":
+									subtotal = type === "Package" ? 12.99 : 4.99;
+									break;
+								case "xpress":
+									subtotal = type === "Package" ? 18.99 : 9.99;
+									break;
+								case "priority":
+									subtotal = type === "Package" ? 24.99 : 14.99;
+									break;
+							}
+							subtotal += signature.Signature ? 2 : 0;
+							let tax = subtotal * 0.13;
+							alert(`Source address: ${from}\nDestination address: ${to}\nParcel Type: ${type}\nWeight: ${weight} lbs.\nRate: ${rate}\nSignature?: ${signature.Signature}\n\nCost with tax: $${Number((subtotal + tax).toFixed(2))}`);
+						}
+					}}
+				>
 					<Text style={styles.buttonText}>Get Rate</Text>
 				</Pressable>
 			</ScrollView>
